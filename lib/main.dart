@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:tab_container/tab_container.dart';
 import '../services/googleplaces.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() {
-  runApp(const MyApp());
+// void main() async{
+//   await dotenv.load();
+//   runApp(
+//     const MyApp()
+//   );
+// }
+
+Future<void> main() async {
+  await dotenv.load(fileName: ".env");
+  runApp(MyApp());
 }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -15,7 +25,7 @@ class MyApp extends StatelessWidget {
       title: 'Matcha-Go',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color.fromARGB(255, 1, 49, 1)),
+            seedColor: const Color.fromARGB(255, 178, 236, 178)),
         useMaterial3: true,
       ),
       home: const HomeScreen(),
@@ -35,6 +45,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   @override
   void initState() {
+    //print(dotenv.env['KEY']);
     super.initState();
     _tabController = TabController(length: 3, vsync: this); // Correct way to initialize
   }
