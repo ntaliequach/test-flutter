@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "94909323395",
+    "project_id": "matcha-go-27f54",
+    "storage_bucket": "matcha-go-27f54.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:94909323395:android:d1a0baadf6fee6517123b6",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application_1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSTrXtcc71BAva5UUjI-2vJdDrko4EzLA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

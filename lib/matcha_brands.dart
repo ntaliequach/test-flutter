@@ -1,6 +1,4 @@
-import '/favorite_tabs.dart';
 import 'package:flutter/material.dart';
-import '../services/googleplaces.dart';
 
 // ------------------------------------------- MATCHA BRANDS TAB ---------------------------------------------------
 
