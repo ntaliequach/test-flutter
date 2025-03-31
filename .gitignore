@@ -12,6 +12,7 @@
 .swiftpm/
 migrate_working_dir/
 .env
+.functions/
 
 # IntelliJ related
 *.iml
@@ -33,6 +34,7 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
+/functions/
 
 # Symbolication related
 app.*.symbols
