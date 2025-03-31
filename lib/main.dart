@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:tab_container/tab_container.dart';
-import '../services/googleplaces.dart';
+import '/favorite_tabs.dart';
+import '/matcha_shops.dart';
+import '/matcha_brands.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-// void main() async{
-//   await dotenv.load();
-//   runApp(
-//     const MyApp()
-//   );
-// }
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized(); // Ensures platform plugins are initialized
   await dotenv.load(fileName: ".env");
-  runApp(MyApp());
+  runApp(const MyApp());
 }
-
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -60,10 +56,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home'),
+        title: const Text('Matcha-Go', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
         centerTitle: true,
         backgroundColor: const Color.fromARGB(255, 209, 248, 209),
-        foregroundColor: const Color.fromARGB(255, 107, 214, 107),
+        foregroundColor: Colors.green,
       ),
       body: Padding(
         padding: const EdgeInsets.all(10),
@@ -76,17 +72,17 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           tabBorderRadius: BorderRadius.circular(10),
           childPadding: const EdgeInsets.all(0),
           selectedTextStyle: const TextStyle(
-            color: Color.fromARGB(255, 107, 214, 107),
-            fontSize: 9,
+            color: Color.fromARGB(255, 41, 103, 41),
+            fontSize: 10,
           ),
           unselectedTextStyle: const TextStyle(
-            color: Color.fromARGB(255, 107, 214, 107),
-            fontSize: 9,
+            color: Color.fromARGB(255, 41, 103, 41),
+            fontSize: 10,
           ),
           colors: const [
-            Color.fromARGB(255, 178, 236, 178),
-            Color.fromARGB(255, 178, 236, 178),
-            Color.fromARGB(255, 178, 236, 178),
+            Color.fromARGB(255, 209, 248, 209),
+            Color.fromARGB(255, 209, 248, 209),
+            Color.fromARGB(255, 209, 248, 209),
           ],
           tabs: [
             Row(
@@ -103,8 +99,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Image.asset('assets/icons/shop-brands.png', height: 35),
-                const SizedBox(width: 5),
+                Image.asset('assets/icons/shop-brands.png', height: 30),
+                const SizedBox(width: 4),
                 const Flexible(child: Text('Search for brands', overflow: TextOverflow.ellipsis)),
               ],
             ),
@@ -120,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
           children: const [
             HomeTab(),
-            SearchTab(),
+            MatchaBrandsTab(),
             MatchaShopsTab(),
           ],
         ),
@@ -131,68 +127,58 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
 // ------------------------------------------- HOME TAB ---------------------------------------------------
 
-class HomeTab extends StatelessWidget {
+class HomeTab extends StatefulWidget {
   const HomeTab({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const Center(child: Text('This is the Home Tab'));
-  }
+  State<HomeTab> createState() => _HomeTabState();
 }
 
-class SearchTab extends StatelessWidget {
-  const SearchTab({super.key});
+class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
+  late TabController _favoritesTabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _favoritesTabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _favoritesTabController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return const Center(child: Text('Search for brands here'));
+    return Column(
+      children: [
+        const Padding(
+          padding: EdgeInsets.all(12.0),
+          child: Text(
+            'Favorites',
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.green),
+          ),
+        ),
+        TabBar(
+          controller: _favoritesTabController,
+          labelColor: Colors.green,
+          indicatorColor: Colors.green,
+          tabs: const [
+            Tab(text: 'Matcha Cafes'),
+            Tab(text: 'Matcha Brands'),
+          ],
+        ),
+        Expanded(
+          child: TabBarView(
+            controller: _favoritesTabController,
+            children: const [
+              FavoriteCafesList(),
+              FavoriteBrandsList(),
+            ],
+          ),
+        ),
+      ],
+    );
   }
-}
-
-// ------------------------------------------- MATCHA SHOPS TAB ---------------------------------------------------
-
-class MatchaShopsTab extends StatelessWidget {
-  
-  const MatchaShopsTab({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    
-    //initialize service
-    final placesService = GooglePlacesService();
-
-    return FutureBuilder(
-      //call function to fetch matcha shops
-      future: placesService.fetchMatchaShopsNearby(location: '37.7749,-122.4194'),
-      builder: (context, snapshot) {
-        //while waiting for data show a loading spinner
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        //if an error occurs
-        if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
-        }
-
-        //extract the shop list from snapshot
-        final shops = snapshot.data!;
-
-        //display scrollable list
-        return ListView.builder(
-          itemCount: shops.length,
-          itemBuilder: (context, index) {
-            final shop = shops[index];
-            return ListTile(
-              title: Text(shop['name']),
-              subtitle: Text(
-                '${shop['address']} - ${shop['rating']}',
-              ),
-              leading: const Icon(Icons.store_mall_directory),
-              );
-            },
-          );
-        },
-      );
-    }
 }
