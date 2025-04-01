@@ -166,7 +166,7 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
           indicatorColor: Colors.green,
           tabs: const [
             Tab(text: 'Matcha Cafes'),
-            Tab(text: 'Matcha Brands'),
+            //Tab(text: 'Matcha Brands'),
           ],
         ),
         Expanded(
@@ -174,7 +174,7 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
             controller: _favoritesTabController,
             children: const [
               FavoriteCafesList(),
-              FavoriteBrandsList(),
+              //FavoriteBrandsList(),
             ],
           ),
         ),

@@ -4,10 +4,6 @@ import 'package:firebase_core/firebase_core.dart' show Firebase, FirebaseOptions
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
 
-/// Default [FirebaseOptions] for use with your Firebase apps.
-///
-/// Example:
-import 'firebase_options.dart';
 
 Future<void> initializeFirebase() async {
   await Firebase.initializeApp(

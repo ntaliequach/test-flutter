@@ -49,19 +49,19 @@ class _FavoriteCafesListState extends State<FavoriteCafesList> {
 }
 
 
-class FavoriteBrandsList extends StatelessWidget {
-  const FavoriteBrandsList({super.key});
+// class FavoriteBrandsList extends StatelessWidget {
+//   const FavoriteBrandsList({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      children: const [
-        ListTile(title: Text('Ippodo')),
-        ListTile(title: Text('Matchaeologist')),
-      ],
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return ListView(
+//       children: const [
+//         ListTile(title: Text('Ippodo')),
+//         ListTile(title: Text('Matchaeologist')),
+//       ],
+//     );
+//   }
+// }
 
 
 
