@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:tab_container/tab_container.dart';
-import '/favorite_tabs.dart';
-import '/matcha_shops.dart';
-import '/matcha_brands.dart';
+import '/favorite_tabs.dart' as favorites;
+import '/matcha_shops.dart' as shops;
+import '/matcha_brands.dart' as brands;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-
+import 'package:auto_route/auto_route.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized(); // Ensures platform plugins are initialized
+  WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -17,18 +17,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Matcha-Go',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
             seedColor: const Color.fromARGB(255, 178, 236, 178)),
         useMaterial3: true,
       ),
-      home: const HomeScreen(),
+
     );
   }
 }
 
+@RoutePage()
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -114,10 +115,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             ),
           ],
 
-          children: const [
-            HomeTab(),
-            MatchaBrandsTab(),
-            MatchaShopsTab(),
+          children: [
+            const HomeTab(),
+            brands.MatchaBrandsTab(),
+            const shops.MatchaShopsTab(),
           ],
         ),
       ),
@@ -140,7 +141,7 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _favoritesTabController = TabController(length: 2, vsync: this);
+    _favoritesTabController = TabController(length: 1, vsync: this);
   }
 
   @override
@@ -173,7 +174,7 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
           child: TabBarView(
             controller: _favoritesTabController,
             children: const [
-              FavoriteCafesList(),
+              favorites.FavoriteCafesList(),
               //FavoriteBrandsList(),
             ],
           ),

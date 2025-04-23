@@ -17,6 +17,7 @@ class MatchaBrandService {
       }).toList();
     } else {
       throw Exception('Failed to load brand data');
+      
     }
   }
 }

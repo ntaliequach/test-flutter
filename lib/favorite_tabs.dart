@@ -1,6 +1,8 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+@RoutePage()
 class FavoriteCafesList extends StatefulWidget {
   const FavoriteCafesList({super.key});
 
@@ -69,8 +71,8 @@ class _FavoriteCafesListState extends State<FavoriteCafesList> {
 
 
 class FavoritesService {
-  static const _cafesKey = 'favorite_cafes';
-  static const _brandsKey = 'favorite_brands';
+  // static const _cafesKey = 'favorite_cafes';
+  // static const _brandsKey = 'favorite_brands';
 
   Future<void> toggleFavorite(String key, String name) async {
     final prefs = await SharedPreferences.getInstance();

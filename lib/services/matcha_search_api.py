@@ -12,7 +12,7 @@ def search_google(query, num_results=5):
 
     load_dotenv()
 
-    API_KEY = os.getenv("API_KEY")
+    API_KEY = os.getenv("GOOGLE_PLACES_API_KEY")
     CSE_ID = os.getenv("CSE_ID")
 
     params = {

@@ -1,35 +1,37 @@
-
-import 'dart:convert';  //decode json
+import 'dart:convert';  // decode JSON
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 // ---------------------- Service class to make calls to Google Places API ----------------------
 
-
 class GooglePlacesService {
-  final key = dotenv.env['GOOGLE_PLACES_API_KEY'];
+  final String? _key = dotenv.env['GOOGLE_PLACES_API_KEY'];
 
-  //fetches nearby matcha shops based on location
+  // Fetch nearby matcha shops based on location
   Future<List<Map<String, dynamic>>> fetchMatchaShopsNearby({
     required String location, // "latitude,longitude"
-    //search radius in meters
-    int radius = 1000,
+    int radius = 1000,        // search radius in meters
   }) async {
-    //construct API request url
+    if (_key == null || _key.isEmpty) {
+      throw Exception('❌ API key is missing or not loaded from .env');
+    }
+
     final url = Uri.parse(
-      'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=$location&radius=$radius&keyword=matcha&key=$key',
+      'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=$location&radius=$radius&keyword=matcha&key=$_key',
     );
 
-    //send GET request to google places api
     final response = await http.get(url);
-    print('API response: ${response.body}');
-    //if successful decode and return formatted list
+    print('🌐 API Request: $url');
+    print('📦 API Response: ${response.body}');
+
     if (response.statusCode == 200) {
-      //convert json string to map
       final data = jsonDecode(response.body);
+      if (data['status'] == 'REQUEST_DENIED') {
+        throw Exception('❌ API Error: ${data['error_message']}');
+      }
+
       final results = data['results'] as List;
 
-      //map each result to a simplified object
       return results.map((place) {
         return {
           'name': place['name'],
@@ -38,9 +40,7 @@ class GooglePlacesService {
         };
       }).toList();
     } else {
-      //if the requests fail
-      throw Exception('Failed to load matcha shops :(');
+      throw Exception('❌ HTTP Error: ${response.statusCode}');
     }
   }
-  
 }
